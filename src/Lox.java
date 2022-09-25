@@ -32,7 +32,7 @@ public class Lox {
         BufferedReader reader = new BufferedReader(input);
 
         for(;;){
-            System.out.print(">_");
+            System.out.print("[jlox]>_ ");
             String line = reader.readLine();
             if(line == null) break;
             run(line);
