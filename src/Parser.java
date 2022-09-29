@@ -9,6 +9,14 @@ public class Parser {
         this.tokens = tokens;
     }
 
+    Expr parse(){
+        try {
+            return expression();
+        }catch (ParseError error){
+            return null;
+        }
+    }
+
     private Expr expression(){
         return equality();
     }
@@ -131,5 +139,27 @@ public class Parser {
     private ParseError error(Token token, String message){
         Lox.error(token, message);
         return  new ParseError();
+    }
+
+    private void synchronize() {
+        advance();
+
+        while (!isAtEnd()) {
+            if (previous().type == TokenType.SEMICOLON) return;
+
+            switch (peek().type) {
+                case CLASS:
+                case FUN:
+                case VAR:
+                case FOR:
+                case IF:
+                case WHILE:
+                case PRINT:
+                case RETURN:
+                    return;
+            }
+
+            advance();
+        }
     }
 }
