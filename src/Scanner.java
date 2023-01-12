@@ -6,7 +6,6 @@ import java.util.Map;
 public class Scanner {
     private final String source;
     private final List<Token> tokens = new ArrayList<Token>();
-
     private int start = 0;
     private int current = 0;
     private int line = 1;
@@ -144,7 +143,7 @@ public class Scanner {
     }
     private boolean match(char expected){
         if(isAtEnd()) return  false;
-        if(source.charAt(current) != expected) return false;
+        if(peek() != expected) return false;
 
         current++;
         return true;

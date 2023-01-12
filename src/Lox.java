@@ -23,7 +23,7 @@ public class Lox {
 
     private static void runFile(String path) throws IOException{
         byte[] bytes = Files.readAllBytes(Paths.get(path));
-        // Why using UTF-8? Isn't ASCII lighter?
+
         run(new String(bytes, Charset.defaultCharset()));
 
         if(hadError) System.exit(65);
@@ -44,14 +44,17 @@ public class Lox {
     }
 
     private static void run(String source){
+        // Scanning
         Scanner scanner = new Scanner(source);
         List<Token> tokens = scanner.scanTokens();
+
+        // Parsing
         Parser parser = new Parser(tokens);
-        Expr expression = parser.parse();
+        List<Stmt> statements = parser.parse();
 
         if(hadError) return;
 
-        interpreter.interpret(expression);
+        interpreter.interpret(statements);
     }
 
     static void error(int line, String message){
